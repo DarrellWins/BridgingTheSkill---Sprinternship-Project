@@ -1,88 +1,151 @@
 import random
-from word_bank import ACTION_VERBS, PAST_TO_BASE
 
-def best_verb(sentence, skill):
-    words = sentence.split()
-    for w in words:
-        base = PAST_TO_BASE.get(w.capitalize(), w.capitalize())
-        if base in ACTION_VERBS[skill]:
-            return base
-    return random.choice(ACTION_VERBS[skill])
+# Action verbs organized by skill category
+ACTION_VERBS = {
+    "Leadership": [
+        "Coordinated", "Directed", "Facilitated", "Guided", 
+        "Led", "Managed", "Mentored", "Supervised", "Organized"
+    ],
+    "Communication": [
+        "Advised", "Collaborated", "Consulted", "Presented",
+        "Communicated with", "Engaged", "Counseled", "Instructed"
+    ],
+    "Problem-Solving": [
+        "Analyzed", "Assessed", "Developed", "Implemented",
+        "Improved", "Resolved", "Streamlined", "Designed"
+    ],
+    "Teamwork": [
+        "Assisted", "Contributed to", "Partnered with", 
+        "Supported", "Cooperated with", "Helped", "Aided"
+    ]
+}
 
+# ---------- CLEANING FUNCTIONS ---------- #
+def clean_name(name):
+    """Capitalizes each part of the name correctly"""
+    return " ".join(word.capitalize() for word in name.strip().split())
+
+def normalize_experience(sentence):
+    """Turns short phrases into complete resume-ready bullet points"""
+    sentence = sentence.strip().lower()
+    
+    # Common experience mappings
+    mappings = {
+        "student mentor": "students through academic mentoring programs",
+        "mentor": "peers through one-on-one mentoring sessions",
+        "volunteer": "community members through volunteer service initiatives",
+        "tutor": "students with challenging academic coursework",
+        "caregiver": "individuals with daily caregiving and personal assistance",
+        "babysitter": "children with childcare and educational activities",
+        "coach": "team members through sports coaching and training",
+        "cashier": "customers with transactions and store operations",
+        "server": "customers with dining service and hospitality"
+    }
+    
+    return mappings.get(sentence, sentence)
+
+# ---------- BULLET GENERATION ---------- #
 def generate_bullets(sentence, skill, n=3):
+    """Generate professional resume bullet points"""
     bullets = []
     used_verbs = set()
-    adverbs = ["Successfully", "Effectively", "Efficiently", "Collaboratively", "Proactively"]
+    
+    object_phrase = normalize_experience(sentence)
+    
+    # Better templates with proper grammar
     templates = [
-        "{verb} {adverb} {sentence}",
-        "{verb} {sentence} to achieve results",
-        "{verb} {adverb} by {sentence_lower}",
-        "{verb} {adverb} in {sentence_lower}"
+        "{verb} {object}",
+        "{verb} and supported {object}",
+        "{verb} {object} to achieve program goals"
     ]
     
-    sentence_lower = sentence.lower()  # precompute lowercase version
-    
     for _ in range(n):
-        verb = best_verb(sentence, skill)
-        # avoid repeating verbs
+        # Get a unique action verb
+        verb = random.choice(ACTION_VERBS[skill])
         while verb in used_verbs and len(used_verbs) < len(ACTION_VERBS[skill]):
             verb = random.choice(ACTION_VERBS[skill])
         used_verbs.add(verb)
         
-        adverb = random.choice(adverbs)
-        template = random.choice(templates)
-        
-        # format the bullet
-        bullet = template.format(verb=verb, adverb=adverb, sentence=sentence, sentence_lower=sentence_lower)
+        # Create bullet point
+        bullet = random.choice(templates).format(
+            verb=verb,
+            object=object_phrase
+        )
         bullets.append(bullet)
     
     return bullets
 
+# ---------- PROGRAM START ---------- #
+print("=== Life Experience → Resume Translator ===\n")
 
-# Collect personal info
-name = input("Enter your full name: ")
-email = input("Enter your email: ")
-phone = input("Enter your phone number: ")
+# Get name with proper capitalization
+name = clean_name(input("Enter your full name: "))
 
 experiences = []
 
+# Collect experiences
 while True:
-    add_exp = input("\nDo you want to add an experience? (y/n): ").lower()
-    if add_exp != "yes" and add_exp != "y":
+    add = input("\nAdd an experience? (y/n): ").lower()
+    if add not in ("y", "yes"):
         break
-
-    category = input("Enter category (Work/Volunteer/Other): ")
-    sentence = input("Describe your experience in 1-2 sentences: ").strip()
     
-    print("Choose the main skill this experience highlights:")
-    for i, skill in enumerate(ACTION_VERBS.keys(), 1):
-        print(f"{i}. {skill}")
+    category = input("Category (Work / Volunteer / Other): ").strip().title()
+    sentence = input("Describe your experience (e.g., 'student mentor', 'cashier', 'tutor'): ")
     
-    skill_choice = int(input("Enter the number of the skill: "))
-    skill = list(ACTION_VERBS.keys())[skill_choice - 1]
-
-    bullets = generate_bullets(sentence, skill, n=3)
+    print("\nChoose the skill this experience highlights:")
+    skills = list(ACTION_VERBS.keys())
+    for i, s in enumerate(skills, 1):
+        print(f"  {i}. {s}")
     
-    print("\nHere are 3 suggested bullet points for this experience:")
+    try:
+        skill_choice = int(input("Enter number (1-4): "))
+        if 1 <= skill_choice <= len(skills):
+            skill = skills[skill_choice - 1]
+        else:
+            print("Invalid choice. Defaulting to Leadership.")
+            skill = skills[0]
+    except ValueError:
+        print("Invalid input. Defaulting to Leadership.")
+        skill = skills[0]
+    
+    bullets = generate_bullets(sentence, skill)
+    
+    print("\nSuggested bullet points:")
     for i, b in enumerate(bullets, 1):
-        print(f"{i}. {b}")
+        print(f"  {i}. {b}")
     
-    choice = int(input("Choose the number of the bullet you like best: "))
-    chosen_bullet = bullets[choice - 1]
+    try:
+        choice = int(input("Choose the best bullet (1-3): "))
+        if 1 <= choice <= 3:
+            experiences.append({
+                "category": category,
+                "bullet": bullets[choice - 1]
+            })
+        else:
+            print("Invalid choice. Using first option.")
+            experiences.append({
+                "category": category,
+                "bullet": bullets[0]
+            })
+    except ValueError:
+        print("Invalid input. Using first option.")
+        experiences.append({
+            "category": category,
+            "bullet": bullets[0]
+        })
 
-    experiences.append({
-        "category": category,
-        "bullet": chosen_bullet
-    })
+# ---------- OUTPUT ---------- #
+print("\n\n" + "="*50)
+print("PROFESSIONAL RESUME - EXPERIENCE SECTION")
+print("="*50 + "\n")
+print(f"Name: {name}\n")
 
-# Print resume
-print("\n\n===== LIFE EXPERIENCE RESUME =====\n")
-print(f"Name: {name}")
-print(f"Email: {email} | Phone: {phone}")
+# Group and display by category
+for cat in sorted(set(e["category"] for e in experiences)):
+    print(f"--- {cat.upper()} ---")
+    for e in experiences:
+        if e["category"] == cat:
+            print(f"  • {e['bullet']}")
+    print()
 
-categories = set([exp["category"] for exp in experiences])
-for cat in categories:
-    print(f"\n--- {cat.upper()} ---")
-    for exp in experiences:
-        if exp["category"] == cat:
-            print(f" - {exp['bullet']}")
+print("="*50)
