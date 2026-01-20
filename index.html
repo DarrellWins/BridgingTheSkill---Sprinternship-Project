@@ -65,7 +65,7 @@ button:hover{background:#5568d3;}
 
     <div class="form-section">
         <label for="role">Role / Position Title</label>
-        <input type="text" id="role" placeholder="e.g., Student Mentor, Cashier, Tutor">
+        <input type="text" id="role" placeholder="e.g., Student Mentor, Cashier, Tutor, Hotel Front Desk">
     </div>
 
     <div class="form-section">
@@ -106,16 +106,17 @@ button:hover{background:#5568d3;}
 </div>
 
 <script>
-// Word bank
+// Word Bank
 const ACTION_VERBS={
-    "Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided"],
-    "Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed"],
-    "Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined"],
-    "Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided"],
-    "Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized"],
-    "Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented"]
+    "Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided","Oversaw"],
+    "Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed","Reported"],
+    "Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined","Optimized"],
+    "Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided","Facilitated","Joined forces"],
+    "Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized","Innovated"],
+    "Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented","Advanced"]
 };
 
+// Expanded Known Roles Mapping (30+ new roles)
 const ROLE_OBJECTS={
     "tech intern":"technical projects and team initiatives",
     "software intern":"software development tasks and team projects",
@@ -132,123 +133,81 @@ const ROLE_OBJECTS={
     "caregiver":"individuals with daily living and personal support",
     "teacher":"students through instructional planning and delivery",
     "coach":"team members through training and performance development",
-    "camp counselor":"campers through supervised activities and programs"
+    "camp counselor":"campers through supervised activities and programs",
+    "hotel front desk":"guests with check-in, check-out, and service requests",
+    "server":"restaurant guests through table service and customer care",
+    "receptionist":"visitors and clients with administrative tasks",
+    "bartender":"customers with beverage preparation and service",
+    "delivery driver":"customers by delivering packages safely and on time",
+    "graphic designer":"visual content creation and brand design",
+    "marketing assistant":"marketing campaigns and social media management",
+    "event coordinator":"planning and executing events efficiently",
+    "warehouse associate":"inventory handling and order fulfillment",
+    "librarian assistant":"library resources management and user assistance",
+    "lifeguard":"ensuring water safety and supervising swimmers",
+    "childcare provider":"children with learning and recreational activities",
+    "personal trainer":"clients with fitness guidance and workout planning",
+    "photographer":"capturing and editing visual content",
+    "social media manager":"content creation and community engagement",
+    "fundraising coordinator":"donor relations and campaign management",
+    "customer support specialist":"customer inquiries and problem resolution",
+    "project coordinator":"project organization and team collaboration",
+    "sales representative":"clients with product solutions and relationship building",
+    "camp instructor":"youth through skill-building activities",
+    "health aide":"patients with daily living assistance and care",
+    "office assistant":"administrative support and document management"
 };
 
+// Expanded Skill Keywords (20 more)
 const SKILL_KEYWORDS={
     "tech intern":["industry best practices","technical documentation"],
     "intern":["project collaboration","professional communication"],
     "tutor":["personalized learning strategies","academic progress tracking"],
     "mentor":["goal setting","professional development"],
     "volunteer":["community outreach","program coordination"],
-    "research assistant":["data accuracy","analytical methodologies"]
+    "research assistant":["data accuracy","analytical methodologies"],
+    "server":["customer satisfaction","order accuracy","time management","hospitality services"],
+    "receptionist":["front desk operations","scheduling","phone etiquette","administrative support"],
+    "bartender":["drink preparation","customer interaction","inventory management"],
+    "delivery driver":["route optimization","on-time delivery","safety protocols"],
+    "graphic designer":["Adobe Creative Suite","branding","visual storytelling"],
+    "marketing assistant":["campaign planning","social media content","analytics"],
+    "event coordinator":["logistics planning","vendor coordination","timeline management"],
+    "warehouse associate":["inventory management","shipping/receiving","organization"],
+    "librarian assistant":["cataloging","user support","research assistance"],
+    "lifeguard":["water safety","emergency response","patrol supervision"],
+    "childcare provider":["child supervision","age-appropriate activities","behavior management"],
+    "personal trainer":["fitness planning","motivation techniques","health education"],
+    "photographer":["shooting","editing","lighting"],
+    "social media manager":["content creation","community engagement","analytics"],
+    "fundraising coordinator":["donor outreach","campaign management","budgeting"],
+    "customer support specialist":["problem-solving","communication","CRM tools"],
+    "project coordinator":["project planning","team collaboration","task tracking"],
+    "sales representative":["client relations","negotiation","product knowledge"],
+    "camp instructor":["activity planning","youth engagement","safety supervision"],
+    "health aide":["patient care","health monitoring","daily assistance"],
+    "office assistant":["administrative support","file organization","calendar management"]
 };
 
-let userName="";
-let experiences=[];
-let currentBullets=[];
-let selectedBullets=[];
+// Variables
+let userName="",experiences=[],currentBullets=[],selectedBullets=[];
 
-// Helpers
+// Helper functions
 function capitalizeWords(str){return str.trim().split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');}
-function normalizeExperience(role){const r=role.toLowerCase(); return ROLE_OBJECTS[r]||r;}
-function getSkillKeywords(role){const r=role.toLowerCase(); return SKILL_KEYWORDS[r]?SKILL_KEYWORDS[r].sort(()=>0.5-Math.random()).slice(0,2):["professional skills","team collaboration"];}
-function generateBullets(skill,role,n=5){const bullets=[]; const used=new Set(); const obj=normalizeExperience(role); const keywords=getSkillKeywords(role); const verbs=ACTION_VERBS[skill]; const templates=[(v,o)=>`${v} ${o}`,(v,o)=>`${v} ${o} to support organizational goals`,(v,o)=>`${v} ${o} while applying ${keywords[0]}`,(v,o)=>`${v} ${o} in collaboration with team members`,(v,o)=>`${v} ${o} while developing ${keywords[0]} and ${keywords[1]||"cross-functional collaboration"}`]; for(let i=0;i<n;i++){let v=verbs[Math.floor(Math.random()*verbs.length)]; while(used.has(v)&&used.size<verbs.length){v=verbs[Math.floor(Math.random()*verbs.length)];} used.add(v); const t=templates[Math.floor(Math.random()*templates.length)]; bullets.push(t(v,obj));} return bullets;}
+function normalizeExperience(role){const r=role.trim(); const rLower=r.toLowerCase(); return ROLE_OBJECTS[rLower] || `${r} responsibilities`;}
+function getSkillKeywords(role,skill){const rLower=role.toLowerCase(); if(SKILL_KEYWORDS[rLower]) return SKILL_KEYWORDS[rLower].sort(()=>0.5-Math.random()).slice(0,2); const generic={"Leadership":["team coordination","project planning","mentoring"],"Communication":["client communication","presentations","report writing"],"Problem-Solving":["analytical thinking","data analysis","process improvement"],"Teamwork":["collaboration","cross-functional support","group facilitation"],"Creative":["idea generation","design thinking","creative problem-solving"],"Taking Action":["execution","initiative","task completion"]}; return generic[skill] || ["professional skills","team collaboration"];}
+function generateBullets(skill,role,n=5){const bullets=[],usedVerbs=new Set(),objectPhrase=normalizeExperience(role),keywords=getSkillKeywords(role,skill),extraPhrases=["to enhance outcomes","while improving team efficiency","by streamlining processes","to achieve project goals","with measurable results"]; for(let i=0;i<n;i++){let verb=ACTION_VERBS[skill][Math.floor(Math.random()*ACTION_VERBS[skill].length)]; while(usedVerbs.has(verb) && usedVerbs.size<ACTION_VERBS[skill].length) verb=ACTION_VERBS[skill][Math.floor(Math.random()*ACTION_VERBS[skill].length)]; usedVerbs.add(verb); const t=Math.floor(Math.random()*3); let bullet=""; if(t===0) bullet=`${verb} ${objectPhrase} using ${keywords[0]}`; else if(t===1) bullet=`${verb} ${objectPhrase} with ${keywords[0]} and ${keywords[1]||"collaboration"}`; else bullet=`${verb} ${objectPhrase} ${extraPhrases[Math.floor(Math.random()*extraPhrases.length)]}`; bullets.push(bullet);} return bullets;}
 
-// Steps
-function startAddingExperiences(){
-    userName=capitalizeWords(document.getElementById('userName').value);
-    if(!userName){alert("Please enter your name"); return;}
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-}
-
-function generateBulletOptions(){
-    const role=document.getElementById('role').value.trim();
-    const skill=document.getElementById('skill').value;
-    if(!role){alert("Enter a role/position"); return;}
-    currentBullets=generateBullets(skill,role);
-    selectedBullets=[];
-    const container=document.getElementById('bulletOptions'); container.innerHTML='';
-    currentBullets.forEach((b,i)=>{
-        const div=document.createElement('div');
-        div.className='bullet-item';
-        div.innerHTML=`<input type="checkbox" id="bullet${i}" onchange="toggleBullet(${i})"><label for="bullet${i}" style="cursor:pointer; flex:1">${b}</label>`;
-        div.onclick=e=>{if(e.target.tagName!=='INPUT') document.getElementById(`bullet${i}`).click();}
-        container.appendChild(div);
-    });
-    updateSelectionCount();
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
-}
-
+// Step Functions
+function startAddingExperiences(){userName=capitalizeWords(document.getElementById('userName').value); if(!userName){alert("Please enter your name"); return;} document.getElementById('step1').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
+function generateBulletOptions(){const role=document.getElementById('role').value.trim(); const skill=document.getElementById('skill').value; if(!role){alert("Enter a role/position"); return;} currentBullets=generateBullets(skill,role); selectedBullets=[]; const container=document.getElementById('bulletOptions'); container.innerHTML=''; currentBullets.forEach((b,i)=>{const div=document.createElement('div'); div.className='bullet-item'; div.innerHTML=`<input type="checkbox" id="bullet${i}" onchange="toggleBullet(${i})"><label for="bullet${i}" style="cursor:pointer; flex:1">${b}</label>`; div.onclick=e=>{if(e.target.tagName!=='INPUT') document.getElementById(`bullet${i}`).click()}; container.appendChild(div);}); updateSelectionCount(); document.getElementById('step2').classList.add('hidden'); document.getElementById('step3').classList.remove('hidden');}
 function toggleBullet(i){const cb=document.getElementById(`bullet${i}`); const b=currentBullets[i]; if(cb.checked){if(selectedBullets.length>=3){cb.checked=false; return alert("Max 3 bullets");} selectedBullets.push(b); cb.parentElement.classList.add('selected');} else {selectedBullets=selectedBullets.filter(x=>x!==b); cb.parentElement.classList.remove('selected');} updateSelectionCount();}
-function updateSelectionCount(){document.getElementById('selectionCount').textContent=`Selected: ${selectedBullets.length}/3`; }
+function updateSelectionCount(){document.getElementById('selectionCount').textContent=`Selected: ${selectedBullets.length}/3`;}
 function resetBulletSelection(){document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
-
-// Save experience
-function saveExperience(){
-    if(selectedBullets.length<2){alert("Select at least 2 bullets"); return;}
-    const category=document.getElementById('category').value;
-    const role=capitalizeWords(document.getElementById('role').value);
-    experiences.push({category,role,bullets:[...selectedBullets]});
-
-    // Reset step3
-    selectedBullets=[]; currentBullets=[];
-    document.getElementById('step3').classList.add('hidden');
-    document.getElementById('step4').classList.remove('hidden');
-}
-
-// Add another experience
-function addAnotherExperience(){
-    document.getElementById('role').value='';
-    document.getElementById('skill').selectedIndex=0;
-    document.getElementById('category').selectedIndex=0;
-    const container=document.getElementById('bulletOptions'); container.innerHTML='';
-    selectedBullets=[]; currentBullets=[];
-    updateSelectionCount();
-
-    document.getElementById('step4').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-}
-
-// Generate and download resume
-function generateResume(){
-    const output=document.getElementById('output');
-    let html=`<h2>PROFESSIONAL RESUME – EXPERIENCE</h2><p style="text-align:center;"><strong>Name: ${userName}</strong></p>`;
-    const categories=[...new Set(experiences.map(e=>e.category))].sort();
-    categories.forEach(cat=>{
-        html+=`<div class="experience-category"><h3>--- ${cat.toUpperCase()} ---</h3>`;
-        experiences.filter(e=>e.category===cat).forEach(exp=>{
-            html+=`<div class="experience-role"><h4>${exp.role}</h4><ul>`;
-            exp.bullets.forEach(b=>html+=`<li>${b}</li>`);
-            html+='</ul></div>';
-        });
-        html+='</div>';
-    });
-    output.innerHTML=html; output.style.display='block';
-    downloadResume();
-}
-
-function downloadResume(){
-    let text=`PROFESSIONAL RESUME - EXPERIENCE SECTION\n${'='.repeat(50)}\n\nName: ${userName}\n\n`;
-    const categories=[...new Set(experiences.map(e=>e.category))].sort();
-    categories.forEach(cat=>{
-        text+=`--- ${cat.toUpperCase()} ---\n\n`;
-        experiences.filter(e=>e.category===cat).forEach(exp=>{
-            text+=`${exp.role}\n`;
-            exp.bullets.forEach(b=>text+=`  • ${b}\n`);
-            text+='\n';
-        });
-    });
-    const blob=new Blob([text],{type:'text/plain'});
-    const url=window.URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    a.download=`${userName.replace(/\s+/g,'_')}_Resume.txt`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-}
+function saveExperience(){if(selectedBullets.length<2){alert("Select at least 2 bullets"); return;} const category=document.getElementById('category').value; const role=capitalizeWords(document.getElementById('role').value); experiences.push({category,role,bullets:[...selectedBullets]}); selectedBullets=[]; currentBullets=[]; document.getElementById('step3').classList.add('hidden'); document.getElementById('step4').classList.remove('hidden');}
+function addAnotherExperience(){document.getElementById('role').value=''; document.getElementById('skill').selectedIndex=0; document.getElementById('category').selectedIndex=0; document.getElementById('bulletOptions').innerHTML=''; selectedBullets=[]; currentBullets=[]; updateSelectionCount(); document.getElementById('step4').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
+function generateResume(){const output=document.getElementById('output'); let html=`<h2>PROFESSIONAL RESUME – EXPERIENCE</h2><p style="text-align:center;"><strong>Name: ${userName}</strong></p>`; const categories=[...new Set(experiences.map(e=>e.category))].sort(); categories.forEach(cat=>{html+=`<div class="experience-category"><h3>--- ${cat.toUpperCase()} ---</h3>`; experiences.filter(e=>e.category===cat).forEach(exp=>{html+=`<div class="experience-role"><h4>${exp.role}</h4><ul>`; exp.bullets.forEach(b=>html+=`<li>${b}</li>`); html+='</ul></div>';}); html+='</div>';}); output.innerHTML=html; output.style.display='block'; downloadResume();}
+function downloadResume(){let text=`PROFESSIONAL RESUME - EXPERIENCE SECTION\n${'='.repeat(50)}\n\nName: ${userName}\n\n`; const categories=[...new Set(experiences.map(e=>e.category))].sort(); categories.forEach(cat=>{text+=`--- ${cat.toUpperCase()} ---\n\n`; experiences.filter(e=>e.category===cat).forEach(exp=>{text+=`${exp.role}\n`; exp.bullets.forEach(b=>text+=`  • ${b}\n`); text+='\n';});}); const blob=new Blob([text],{type:'text/plain'}); const url=window.URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`${userName.replace(/\s+/g,'_')}_Resume.txt`; a.click(); window.URL.revokeObjectURL(url);}
 </script>
 </body>
 </html>
