@@ -1,64 +1,82 @@
 # word_bank.py
-# Expanded role intelligence + action verbs + skill keywords
-
-ACTION_VERBS = {
-    "Leadership": [
-        "Led", "Directed", "Coordinated", "Supervised",
-        "Managed", "Mentored", "Facilitated", "Guided"
-    ],
-    "Communication": [
-        "Communicated", "Presented", "Advised", "Consulted",
-        "Engaged", "Collaborated", "Instructed"
-    ],
-    "Problem-Solving": [
-        "Analyzed", "Developed", "Designed", "Implemented",
-        "Improved", "Resolved", "Streamlined"
-    ],
-    "Teamwork": [
-        "Collaborated", "Partnered", "Supported",
-        "Contributed", "Assisted", "Aided"
-    ],
-    "Creative": [
-        "Created", "Designed", "Produced",
-        "Developed", "Generated", "Conceptualized"
-    ],
-    "Taking Action": [
-        "Executed", "Initiated", "Completed",
-        "Delivered", "Launched", "Implemented"
-    ]
+ACTION_VERBS={
+    "Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided","Oversaw"],
+    "Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed","Reported"],
+    "Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined","Optimized"],
+    "Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided","Facilitated","Joined forces"],
+    "Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized","Innovated"],
+    "Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented","Advanced"]
 }
 
-# Role → Resume Object (CRITICAL)
-ROLE_OBJECTS = {
-    "tech intern": "technical projects and team initiatives",
-    "software intern": "software development tasks and team projects",
-    "data intern": "data analysis and reporting tasks",
-    "intern": "assigned projects and operational responsibilities",
-
-    "math tutor": "students in core mathematics concepts",
-    "tutor": "students through individualized academic instruction",
-
-    "student mentor": "students through structured mentoring programs",
-    "mentor": "peers through professional development support",
-
-    "cashier": "customers with transactions and point-of-sale operations",
-    "sales associate": "customers with product selection and service",
-
-    "research assistant": "data collection, analysis, and research documentation",
-    "volunteer": "community members through service initiatives",
-    "caregiver": "individuals with daily living and personal support",
-
-    "teacher": "students through instructional planning and delivery",
-    "coach": "team members through training and performance development",
-    "camp counselor": "campers through supervised activities and programs"
+# xpanded Known Roles Mapping (30+ new roles)
+ROLE_OBJECTS={
+    "tech intern":"technical projects and team initiatives",
+    "software intern":"software development tasks and team projects",
+    "data intern":"data analysis and reporting tasks",
+    "intern":"assigned projects and operational responsibilities",
+    "math tutor":"students in core mathematics concepts",
+    "tutor":"students through individualized academic instruction",
+    "student mentor":"students through structured mentoring programs",
+    "mentor":"peers through professional development support",
+    "cashier":"customers with transactions and point-of-sale operations",
+    "sales associate":"customers with product selection and service",
+    "research assistant":"data collection, analysis, and research documentation",
+    "volunteer":"community members through service initiatives",
+    "caregiver":"individuals with daily living and personal support",
+    "teacher":"students through instructional planning and delivery",
+    "coach":"team members through training and performance development",
+    "camp counselor":"campers through supervised activities and programs",
+    "hotel front desk":"guests with check-in, check-out, and service requests",
+    "server":"restaurant guests through table service and customer care",
+    "receptionist":"visitors and clients with administrative tasks",
+    "bartender":"customers with beverage preparation and service",
+    "delivery driver":"customers by delivering packages safely and on time",
+    "graphic designer":"visual content creation and brand design",
+    "marketing assistant":"marketing campaigns and social media management",
+    "event coordinator":"planning and executing events efficiently",
+    "warehouse associate":"inventory handling and order fulfillment",
+    "librarian assistant":"library resources management and user assistance",
+    "lifeguard":"ensuring water safety and supervising swimmers",
+    "childcare provider":"children with learning and recreational activities",
+    "personal trainer":"clients with fitness guidance and workout planning",
+    "photographer":"capturing and editing visual content",
+    "social media manager":"content creation and community engagement",
+    "fundraising coordinator":"donor relations and campaign management",
+    "customer support specialist":"customer inquiries and problem resolution",
+    "project coordinator":"project organization and team collaboration",
+    "sales representative":"clients with product solutions and relationship building",
+    "camp instructor":"youth through skill-building activities",
+    "health aide":"patients with daily living assistance and care",
+    "office assistant":"administrative support and document management"
 }
 
-# Skill keywords for enrichment
-SKILL_KEYWORDS = {
-    "tech intern": ["industry best practices", "technical documentation"],
-    "intern": ["project collaboration", "professional communication"],
-    "tutor": ["personalized learning strategies", "academic progress tracking"],
-    "mentor": ["goal setting", "professional development"],
-    "volunteer": ["community outreach", "program coordination"],
-    "research assistant": ["data accuracy", "analytical methodologies"]
+# Expanded Skill Keywords (20 more)
+KILL_KEYWORDS={
+    "tech intern":["industry best practices","technical documentation"],
+    "intern":["project collaboration","professional communication"],
+    "tutor":["personalized learning strategies","academic progress tracking"],
+    "mentor":["goal setting","professional development"],
+    "volunteer":["community outreach","program coordination"],
+    "research assistant":["data accuracy","analytical methodologies"],
+    "server":["customer satisfaction","order accuracy","time management","hospitality services"],
+    "receptionist":["front desk operations","scheduling","phone etiquette","administrative support"],
+    "bartender":["drink preparation","customer interaction","inventory management"],
+    "delivery driver":["route optimization","on-time delivery","safety protocols"],
+    "graphic designer":["Adobe Creative Suite","branding","visual storytelling"],
+    "marketing assistant":["campaign planning","social media content","analytics"],
+    "event coordinator":["logistics planning","vendor coordination","timeline management"],
+    "warehouse associate":["inventory management","shipping/receiving","organization"],
+    "librarian assistant":["cataloging","user support","research assistance"],
+    "lifeguard":["water safety","emergency response","patrol supervision"],
+    "childcare provider":["child supervision","age-appropriate activities","behavior management"],
+    "personal trainer":["fitness planning","motivation techniques","health education"],
+    "photographer":["shooting","editing","lighting"],
+    "social media manager":["content creation","community engagement","analytics"],
+    "fundraising coordinator":["donor outreach","campaign management","budgeting"],
+    "customer support specialist":["problem-solving","communication","CRM tools"],
+    "project coordinator":["project planning","team collaboration","task tracking"],
+    "sales representative":["client relations","negotiation","product knowledge"],
+    "camp instructor":["activity planning","youth engagement","safety supervision"],
+    "health aide":["patient care","health monitoring","daily assistance"],
+    "office assistant":["administrative support","file organization","calendar management"]
 }
