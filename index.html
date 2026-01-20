@@ -5,37 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Life Experience → Resume Translator</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;}
-.container{max-width:800px;margin:0 auto;background:white;border-radius:15px;box-shadow:0 10px 40px rgba(0,0,0,0.2);padding:40px;}
-h1{color:#667eea;text-align:center;margin-bottom:10px;font-size:2em;}
-.subtitle{text-align:center;color:#666;margin-bottom:30px;}
-.form-section{margin-bottom:25px;}
-label{display:block;margin-bottom:8px;font-weight:600;color:#333;}
-input[type="text"], select{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:8px;font-size:16px;transition:border-color 0.3s;}
-input[type="text"]:focus, select:focus{outline:none;border-color:#667eea;}
-button{background:#667eea;color:white;border:none;padding:12px 30px;border-radius:8px;font-size:16px;cursor:pointer;transition:background 0.3s;font-weight:600;}
-button:hover{background:#5568d3;}
-.bullet-options{background:#f8f9fa;padding:20px;border-radius:8px;margin:20px 0;}
-.bullet-item{margin:12px 0;padding:12px;background:white;border-radius:6px;border:2px solid #e0e0e0;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;}
-.bullet-item:hover{border-color:#667eea;transform:translateX(5px);}
-.bullet-item.selected{border-color:#667eea;background:#f0f4ff;}
-.bullet-item input[type="checkbox"]{margin-right:12px;width:20px;height:20px;cursor:pointer;}
-#output{margin-top:30px;padding:30px;background:#f8f9fa;border-radius:8px;display:none;}
-#output h2{color:#667eea;margin-bottom:20px;text-align:center;}
-.experience-category{margin:25px 0;}
-.experience-category h3{color:#333;border-bottom:2px solid #667eea;padding-bottom:8px;margin-bottom:15px;}
-.experience-role{margin:15px 0 15px 20px;}
-.experience-role h4{color:#555;margin-bottom:8px;}
-.experience-role ul{list-style:none;padding-left:0;}
-.experience-role li{padding:8px 0 8px 25px;position:relative;color:#444;line-height:1.6;}
-.experience-role li:before{content:"•";position:absolute;left:0;color:#667eea;font-weight:bold;font-size:1.2em;}
-.hidden{display:none;}
-.btn-secondary{background:#6c757d;margin-left:10px;}
-.btn-secondary:hover{background:#5a6268;}
-.download-btn{background:#28a745;margin-top:20px;}
-.download-btn:hover{background:#218838;}
-.selection-count{color:#667eea;font-size:14px;margin-top:10px;font-weight:600;}
+* {margin:0;padding:0;box-sizing:border-box;}
+body {font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;}
+.container {max-width:800px;margin:0 auto;background:white;border-radius:15px;box-shadow:0 10px 40px rgba(0,0,0,0.2);padding:40px;}
+h1 {color:#667eea;text-align:center;margin-bottom:10px;font-size:2em;}
+.subtitle {text-align:center;color:#666;margin-bottom:30px;}
+.form-section {margin-bottom:25px;}
+label {display:block;margin-bottom:8px;font-weight:600;color:#333;}
+input[type="text"], select {width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:8px;font-size:16px;transition:border-color 0.3s;}
+input[type="text"]:focus, select:focus {outline:none;border-color:#667eea;}
+button {background:#667eea;color:white;border:none;padding:12px 30px;border-radius:8px;font-size:16px;cursor:pointer;transition:background 0.3s;font-weight:600;}
+button:hover {background:#5568d3;}
+.bullet-options {background:#f8f9fa;padding:20px;border-radius:8px;margin:20px 0;}
+.bullet-item {margin:12px 0;padding:12px;background:white;border-radius:6px;border:2px solid #e0e0e0;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;}
+.bullet-item:hover {border-color:#667eea;transform:translateX(5px);}
+.bullet-item.selected {border-color:#667eea;background:#f0f4ff;}
+.bullet-item input[type="checkbox"] {margin-right:12px;width:20px;height:20px;cursor:pointer;}
+#output {margin-top:30px;padding:30px;background:#f8f9fa;border-radius:8px;display:none;}
+#output h2 {color:#667eea;margin-bottom:20px;text-align:center;}
+.experience-category {margin:25px 0;}
+.experience-category h3 {color:#333;border-bottom:2px solid #667eea;padding-bottom:8px;margin-bottom:15px;}
+.experience-role {margin:15px 0 15px 20px;}
+.experience-role h4 {color:#555;margin-bottom:8px;}
+.experience-role ul {list-style:none;padding-left:0;}
+.experience-role li {padding:8px 0 8px 25px;position:relative;color:#444;line-height:1.6;}
+.experience-role li:before {content:"•";position:absolute;left:0;color:#667eea;font-weight:bold;font-size:1.2em;}
+.hidden {display:none;}
+.btn-secondary {background:#6c757d;margin-left:10px;}
+.btn-secondary:hover {background:#5a6268;}
+.download-btn {background:#28a745;margin-top:20px;}
+.download-btn:hover {background:#218838;}
+.selection-count {color:#667eea;font-size:14px;margin-top:10px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -43,6 +43,7 @@ button:hover{background:#5568d3;}
 <h1>🎯 Life Experience → Resume Translator</h1>
 <p class="subtitle">Transform your experiences into professional resume bullet points</p>
 
+<!-- Step 1: Name -->
 <div id="step1">
 <div class="form-section">
 <label for="userName">Your Full Name</label>
@@ -51,6 +52,7 @@ button:hover{background:#5568d3;}
 <button onclick="startAddingExperiences()">Continue</button>
 </div>
 
+<!-- Step 2: Add Experience -->
 <div id="step2" class="hidden">
 <div class="form-section">
 <label for="category">Category</label>
@@ -60,12 +62,10 @@ button:hover{background:#5568d3;}
 <option value="Other">Other</option>
 </select>
 </div>
-
 <div class="form-section">
-<label for="role">Role / Position Title</label>
-<input type="text" id="role" placeholder="e.g., Student Mentor, Cashier, Tutor, Hotel Front Desk">
+<label for="role">Role/Position Title</label>
+<input type="text" id="role" placeholder="e.g., Student Mentor, Cashier, Tutor">
 </div>
-
 <div class="form-section">
 <label for="skill">Skill this experience highlights</label>
 <select id="skill">
@@ -77,10 +77,10 @@ button:hover{background:#5568d3;}
 <option value="Taking Action">Taking Action</option>
 </select>
 </div>
-
-<button onclick="generateBulletOptions()">Generate Bullet Points</button>
+<button onclick="generateBullets()">Generate Bullet Points</button>
 </div>
 
+<!-- Step 3: Select Bullets -->
 <div id="step3" class="hidden">
 <h3>Select 2-3 Bullet Points</h3>
 <p class="selection-count" id="selectionCount">Selected: 0/3</p>
@@ -89,245 +89,224 @@ button:hover{background:#5568d3;}
 <button class="btn-secondary" onclick="resetBulletSelection()">Try Again</button>
 </div>
 
+<!-- Step 4: Add More or Finish -->
 <div id="step4" class="hidden">
-<p style="text-align:center; margin:20px 0; color:#28a745; font-weight:600;">✓ Experience saved!</p>
+<p style="text-align:center;margin:20px 0;color:#28a745;font-weight:600;">✓ Experience saved!</p>
 <div style="text-align:center;">
 <button onclick="addAnotherExperience()">Add Another Experience</button>
 <button class="download-btn" onclick="generateResume()">Generate Resume</button>
 </div>
 </div>
 
+<!-- Output -->
 <div id="output"></div>
 </div>
 
 <script>
-// Action verbs
-const ACTION_VERBS={
-"Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided","Oversaw"],
-"Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed","Reported"],
-"Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined","Optimized"],
-"Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided","Facilitated","Joined forces"],
-"Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized","Innovated"],
-"Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented","Advanced"]
+// ----- DATA -----
+const ACTION_VERBS = {
+"Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided"],
+"Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed"],
+"Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined"],
+"Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided"],
+"Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized"],
+"Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented"]
 };
 
-// Role tasks (7 per role)
-const ROLE_TASKS={
-"hotel front desk":[
-"greeted and checked in guests",
-"managed reservations and room assignments",
-"answered guest inquiries and resolved complaints",
-"coordinated with housekeeping and maintenance",
-"processed payments and billing",
-"assisted with concierge services",
-"handled guest requests promptly"
-],
-"cashier":[
-"processed transactions quickly and accurately",
-"balanced cash drawer at end of shift",
-"assisted customers with questions and complaints",
-"restocked shelves and organized merchandise",
-"managed point-of-sale systems",
-"handled returns and exchanges",
-"promoted store promotions to customers"
-],
-"tutor":[
-"developed lesson plans for students",
-"assisted students with problem-solving strategies",
-"monitored student progress and performance",
-"explained complex concepts in simple terms",
-"created individualized learning plans",
-"prepared educational materials",
-"held one-on-one tutoring sessions"
-],
-"student mentor":[
-"guided students in academic planning",
-"assisted with college applications",
-"organized mentorship sessions",
-"supported students in goal setting",
-"provided one-on-one coaching",
-"hosted workshops",
-"facilitated peer mentoring"
-],
-"volunteer":[
-"assisted with community outreach programs",
-"organized charity events",
-"coordinated volunteer schedules",
-"managed fundraising activities",
-"prepared materials for events",
-"engaged community members",
-"trained volunteers"
-],
-"server":[
-"took customer orders accurately",
-"served food and beverages",
-"ensured customer satisfaction",
-"cleaned tables and dining area",
-"set up dining space for service",
-"handled customer complaints professionally",
-"coordinated with kitchen staff"
-],
-"receptionist":[
-"answered phone calls promptly",
-"scheduled appointments",
-"greeted visitors",
-"managed front desk operations",
-"maintained office records",
-"coordinated with staff",
-"prepared office documents"
-],
-"intern":[
-"assisted in research and analysis",
-"supported project planning",
-"participated in team meetings",
-"prepared reports and presentations",
-"collaborated with colleagues",
-"analyzed data and trends",
-"drafted documentation"
-],
-"caregiver":[
-"assisted individuals with daily living activities",
-"administered medication as needed",
-"monitored patient health",
-"prepared meals",
-"maintained hygiene standards",
-"scheduled appointments",
-"provided companionship"
-],
-"teacher":[
-"developed lesson plans",
-"delivered instructional content",
-"assessed student performance",
-"managed classroom activities",
-"organized educational materials",
-"provided feedback to students",
-"adapted lessons for diverse learners"
-],
-"coach":[
-"planned training sessions",
-"monitored athlete performance",
-"developed practice drills",
-"motivated team members",
-"assisted in strategy planning",
-"organized team events",
-"communicated with players and staff"
-],
-"sales associate":[
-"assisted customers with purchases",
-"maintained product displays",
-"managed inventory",
-"processed transactions",
-"provided product information",
-"answered customer questions",
-"promoted store specials"
-],
-"tech intern":[
-"developed technical projects",
-"tested software features",
-"analyzed system performance",
-"documented technical issues",
-"assisted team with coding tasks",
-"supported software deployment",
-"collaborated in project meetings"
-],
-"research assistant":[
-"collected and analyzed data",
-"prepared research documentation",
-"assisted with experiments",
-"summarized research findings",
-"organized datasets",
-"communicated results to team",
-"validated data accuracy"
-],
-"camp counselor":[
-"planned recreational activities",
-"supervised campers",
-"ensured safety compliance",
-"assisted in educational programs",
-"organized team-building exercises",
-"coordinated daily schedules",
-"resolved camper conflicts"
-],
-"front desk associate":[
-"greeted visitors professionally",
-"managed check-in and check-out",
-"answered phone calls and inquiries",
-"maintained office records",
-"scheduled appointments",
-"coordinated with staff",
-"assisted in administrative tasks"
-],
-"sales associate":[
-"assisted customers in store",
-"processed transactions efficiently",
-"organized merchandise displays",
-"answered product questions",
-"promoted sales",
-"managed inventory",
-"trained new staff"
-]
-// Add more roles here...
+// ---- Role Tasks (7 tasks per role) ----
+const ROLE_TASKS = {
+"hotel front desk":["Greeted and checked in guests","Managed reservations and room assignments","Answered guest inquiries and complaints","Coordinated with housekeeping and maintenance","Processed payments and billing","Assisted with concierge requests","Maintained front desk logs and records"],
+"tutor":["Assessed student understanding and progress","Developed personalized lesson plans","Guided students through difficult concepts","Provided feedback and support","Prepared educational materials","Monitored academic progress","Communicated with parents on progress"],
+"student mentor":["Mentored peers through structured programs","Assisted students in goal setting","Provided guidance on academic decisions","Organized mentoring sessions","Tracked mentee progress","Encouraged professional development","Facilitated group discussions"],
+"cashier":["Processed customer transactions accurately","Handled returns and exchanges","Managed cash register and receipts","Assisted customers with inquiries","Stocked shelves and organized products","Maintained a clean checkout area","Promoted store sales and specials"],
+"sales associate":["Advised customers on product selection","Processed transactions efficiently","Maintained inventory and displays","Upsold products to meet targets","Resolved customer complaints","Provided product knowledge","Assisted in store promotions"],
+"research assistant":["Collected and analyzed data","Prepared research reports","Assisted in literature reviews","Maintained accurate records","Coordinated with team members","Performed lab or field work","Supported project management"],
+"caregiver":["Assisted clients with daily activities","Provided emotional support","Managed medications and schedules","Monitored health and well-being","Coordinated with families and professionals","Helped with mobility and exercise","Maintained detailed care logs"],
+"intern":["Assisted in projects and tasks","Collaborated with team members","Prepared reports and documentation","Conducted research and analysis","Participated in meetings and briefings","Supported workflow processes","Completed assigned objectives"],
+"teacher":["Planned and delivered lessons","Assessed student performance","Provided feedback and guidance","Prepared teaching materials","Managed classroom behavior","Facilitated group activities","Communicated with parents"],
+"receptionist":["Greeted visitors and clients","Answered phone calls and emails","Scheduled appointments and meetings","Maintained records and files","Coordinated office tasks","Provided information and assistance","Managed front desk operations"],
+"camp counselor":["Supervised campers in activities","Organized recreational events","Provided guidance and support","Monitored camper safety","Facilitated team-building exercises","Assisted with planning programs","Resolved conflicts and issues"]
 };
 
-const SKILL_KEYWORDS={
-"tutor":["lesson planning","student assessment","problem solving","academic support"],
-"student mentor":["goal setting","academic advising","peer counseling","student engagement"],
-"mentor":["professional development","career guidance","skill building","performance coaching"],
-"volunteer":["community outreach","event coordination","social impact","program management"],
+// ---- Skill Keywords (expanded) ----
+const SKILL_KEYWORDS = {
+"tutor":["curriculum development","student assessment","personalized learning","academic progress tracking"],
+"student mentor":["peer counseling","academic advising","goal setting","student engagement"],
+"mentor":["career guidance","professional development","skill building","performance coaching"],
+"volunteer":["community outreach","event coordination","public relations","social impact"],
 "caregiver":["patient care","daily living assistance","health monitoring","compassionate support"],
-"server":["order accuracy","customer satisfaction","hospitality services","time management"],
-"cashier":["customer service","POS systems","inventory management","sales promotion"],
-"receptionist":["front desk operations","scheduling","administrative support","communication skills"],
-"intern":["project collaboration","research analysis","professional communication","technical skills"],
-"teacher":["lesson planning","classroom management","student development","educational technology"],
+"babysitter":["child supervision","age-appropriate activities","safety protocols","behavioral management"],
 "coach":["team building","performance evaluation","training programs","motivational leadership"],
-"sales associate":["product knowledge","customer relations","sales targets","merchandising"],
-"front desk associate":["guest services","reservation management","communication","administrative skills"],
-"tech intern":["technical documentation","software development","team collaboration","coding skills"],
-"research assistant":["data accuracy","analytical methodologies","report writing","research protocols"],
+"cashier":["customer service","point-of-sale systems","cash handling","inventory management"],
+"server":["customer satisfaction","order accuracy","time management","hospitality services"],
+"intern":["project collaboration","research analysis","professional communication","industry best practices"],
+"teacher":["lesson planning","classroom management","educational technology","student development"],
+"receptionist":["front desk operations","scheduling","phone etiquette","administrative support"],
+"sales associate":["product knowledge","sales targets","customer relations","merchandising"],
 "camp counselor":["youth development","activity planning","conflict resolution","safety supervision"]
 };
 
-// Variables
-let userName="",experiences=[],currentBullets=[],selectedBullets=[];
+// ----- PROGRAM VARIABLES -----
+let userName = "";
+let experiences = [];
+let currentBullets = [];
+let selectedBullets = [];
 
-// Functions
+// ----- HELPERS -----
 function capitalizeWords(str){return str.trim().split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');}
-function startAddingExperiences(){userName=capitalizeWords(document.getElementById('userName').value);if(!userName){alert("Enter your name");return;} document.getElementById('step1').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
-function generateBulletOptions(){
-    const roleInput=document.getElementById('role').value.trim().toLowerCase();
-    const skill=document.getElementById('skill').value;
-    if(!roleInput){alert("Enter a role/position");return;}
 
-    // Match role keyword
-    let matchedTasks=[];
+// ----- START -----
+function startAddingExperiences(){
+    userName = capitalizeWords(document.getElementById('userName').value);
+    if(!userName){alert("Please enter your name");return;}
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+}
+
+// ----- GENERATE BULLETS -----
+function generateBullets(){
+    const roleInput = document.getElementById('role').value.trim().toLowerCase();
+    const skill = document.getElementById('skill').value;
+    if(!roleInput){alert("Please enter a role");return;}
+
+    // Find matching tasks
+    let matchedTasks = [];
     for(const key in ROLE_TASKS){
-        if(roleInput.includes(key)){matchedTasks=ROLE_TASKS[key]; break;}
+        if(roleInput.includes(key)){matchedTasks = ROLE_TASKS[key]; break;}
     }
-    if(matchedTasks.length===0) matchedTasks=["performed relevant tasks professionally","collaborated with team members","assisted in projects","communicated with stakeholders","managed responsibilities","developed work processes","executed assignments"];
 
-    // Pick 5 unique tasks
-    const shuffled=matchedTasks.sort(()=>0.5-Math.random());
-    currentBullets=shuffled.slice(0,5).map(task=>`${ACTION_VERBS[skill][Math.floor(Math.random()*ACTION_VERBS[skill].length)]} ${task}`);
-    selectedBullets=[];
-    const container=document.getElementById('bulletOptions'); container.innerHTML='';
-    currentBullets.forEach((b,i)=>{
-        const div=document.createElement('div');
+    // Fallback for unknown roles
+    if(matchedTasks.length === 0){
+        matchedTasks = [
+            "Performed responsibilities professionally",
+            "Collaborated with team members",
+            "Assisted in key projects",
+            "Communicated with stakeholders",
+            "Managed assigned tasks",
+            "Developed workflow improvements",
+            "Executed project assignments"
+        ];
+    }
+
+    // Shuffle tasks and pick 5 unique
+    const shuffled = matchedTasks.sort(()=>0.5-Math.random());
+    currentBullets = shuffled.slice(0,5).map(task=>{
+        const firstWord = task.split(" ")[0].toLowerCase();
+        const allVerbs = Object.values(ACTION_VERBS).flat().map(v=>v.toLowerCase());
+        if(allVerbs.includes(firstWord)){return task;} // already verb
+        const verb = ACTION_VERBS[skill][Math.floor(Math.random()*ACTION_VERBS[skill].length)];
+        return `${verb} ${task}`;
+    });
+
+    selectedBullets = [];
+    displayBulletOptions();
+}
+
+// ----- DISPLAY BULLETS -----
+function displayBulletOptions(){
+    const container = document.getElementById('bulletOptions');
+    container.innerHTML = '';
+    currentBullets.forEach((bullet,index)=>{
+        const div = document.createElement('div');
         div.className='bullet-item';
-        div.innerHTML=`<input type="checkbox" id="bullet${i}" onchange="toggleBullet(${i})"><label for="bullet${i}" style="cursor:pointer;flex:1">${b}</label>`;
-        div.onclick=e=>{if(e.target.tagName!=='INPUT') document.getElementById(`bullet${i}`).click()};
+        div.innerHTML=`<input type="checkbox" id="bullet${index}" onchange="toggleBullet(${index})"><label for="bullet${index}" style="cursor:pointer;flex:1">${bullet}</label>`;
+        div.onclick=e=>{if(e.target.tagName!=='INPUT') document.getElementById(`bullet${index}`).click()};
         container.appendChild(div);
     });
     updateSelectionCount();
-    document.getElementById('step2').classList.add('hidden'); document.getElementById('step3').classList.remove('hidden');
 }
-function toggleBullet(i){const cb=document.getElementById(`bullet${i}`); const b=currentBullets[i]; if(cb.checked){if(selectedBullets.length>=3){cb.checked=false; return alert("Max 3 bullets");} selectedBullets.push(b); cb.parentElement.classList.add('selected');} else{selectedBullets=selectedBullets.filter(x=>x!==b); cb.parentElement.classList.remove('selected');} updateSelectionCount();}
+
+// ----- BULLET SELECTION -----
+function toggleBullet(index){
+    const checkbox = document.getElementById(`bullet${index}`);
+    const bulletItem = checkbox.parentElement;
+    if(checkbox.checked){
+        if(selectedBullets.length>=3){checkbox.checked=false;alert("Select max 3 bullets");return;}
+        selectedBullets.push(currentBullets[index]);
+        bulletItem.classList.add('selected');
+    } else {
+        selectedBullets = selectedBullets.filter(b=>b!==currentBullets[index]);
+        bulletItem.classList.remove('selected');
+    }
+    updateSelectionCount();
+}
+
 function updateSelectionCount(){document.getElementById('selectionCount').textContent=`Selected: ${selectedBullets.length}/3`;}
-function resetBulletSelection(){document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
-function saveExperience(){if(selectedBullets.length<2){alert("Select at least 2 bullets");return;} const category=document.getElementById('category').value; const role=capitalizeWords(document.getElementById('role').value); experiences.push({category,role,bullets:[...selectedBullets]}); selectedBullets=[]; currentBullets=[]; document.getElementById('step3').classList.add('hidden'); document.getElementById('step4').classList.remove('hidden');}
-function addAnotherExperience(){document.getElementById('role').value=''; document.getElementById('skill').selectedIndex=0; document.getElementById('category').selectedIndex=0; document.getElementById('bulletOptions').innerHTML=''; selectedBullets=[]; currentBullets=[]; updateSelectionCount(); document.getElementById('step4').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden');}
-function generateResume(){const output=document.getElementById('output'); let html=`<h2>PROFESSIONAL RESUME – EXPERIENCE</h2><p style="text-align:center;"><strong>Name: ${userName}</strong></p>`; const categories=[...new Set(experiences.map(e=>e.category))].sort(); categories.forEach(cat=>{html+=`<div class="experience-category"><h3>--- ${cat.toUpperCase()} ---</h3>`; experiences.filter(e=>e.category===cat).forEach(exp=>{html+=`<div class="experience-role"><h4>${exp.role}</h4><ul>`; exp.bullets.forEach(b=>html+=`<li>${b}</li>`); html+='</ul></div>';}); html+='</div>';}); output.innerHTML=html; output.style.display='block'; downloadResume();}
-function downloadResume(){let text=`PROFESSIONAL RESUME - EXPERIENCE SECTION\n${'='.repeat(50)}\n\nName: ${userName}\n\n`; const categories=[...new Set(experiences.map(e=>e.category))].sort(); categories.forEach(cat=>{text+=`--- ${cat.toUpperCase()} ---\n\n`; experiences.filter(e=>e.category===cat).forEach(exp=>{text+=`${exp.role}\n`; exp.bullets.forEach(b=>text+=`  • ${b}\n`); text+='\n';});}); const blob=new Blob([text],{type:'text/plain'}); const url=window.URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`${userName.replace(/\s+/g,'_')}_Resume.txt`; a.click(); window.URL.revokeObjectURL(url);}
+
+// ----- RESET BULLETS -----
+function resetBulletSelection(){
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+}
+
+// ----- SAVE EXPERIENCE -----
+function saveExperience(){
+    if(selectedBullets.length<2){alert("Select at least 2 bullets");return;}
+    const category = document.getElementById('category').value;
+    const role = capitalizeWords(document.getElementById('role').value);
+
+    experiences.push({category,role,bullets:[...selectedBullets]});
+
+    // Reset selections
+    selectedBullets = [];
+    currentBullets = [];
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('step4').classList.remove('hidden');
+}
+
+// ----- ADD ANOTHER EXPERIENCE -----
+function addAnotherExperience(){
+    document.getElementById('role').value='';
+    document.getElementById('skill').selectedIndex=0;
+    document.getElementById('category').selectedIndex=0;
+    document.getElementById('step4').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+    document.getElementById('bulletOptions').innerHTML='';
+    selectedBullets = [];
+    currentBullets = [];
+    updateSelectionCount();
+}
+
+// ----- GENERATE RESUME -----
+function generateResume(){
+    const output = document.getElementById('output');
+    let html=`<h2>PROFESSIONAL RESUME – EXPERIENCE</h2><p style="text-align:center;"><strong>Name: ${userName}</strong></p>`;
+    const categories = [...new Set(experiences.map(e=>e.category))].sort();
+    categories.forEach(cat=>{
+        html+=`<div class="experience-category"><h3>--- ${cat.toUpperCase()} ---</h3>`;
+        experiences.filter(e=>e.category===cat).forEach(exp=>{
+            html+=`<div class="experience-role"><h4>${exp.role}</h4><ul>`;
+            exp.bullets.forEach(bullet=>{html+=`<li>${bullet}</li>`;});
+            html+=`</ul></div>`;
+        });
+        html+=`</div>`;
+    });
+    html+=`<div style="text-align:center;"><button class="download-btn" onclick="downloadResume()">Download as Text</button></div>`;
+    output.innerHTML=html;
+    output.style.display='block';
+    document.getElementById('step4').classList.add('hidden');
+}
+
+// ----- DOWNLOAD RESUME -----
+function downloadResume(){
+    let text=`PROFESSIONAL RESUME – EXPERIENCE\n${'='.repeat(50)}\n\nName: ${userName}\n\n`;
+    const categories=[...new Set(experiences.map(e=>e.category))].sort();
+    categories.forEach(cat=>{
+        text+=`--- ${cat.toUpperCase()} ---\n\n`;
+        experiences.filter(e=>e.category===cat).forEach(exp=>{
+            text+=`${exp.role}\n`;
+            exp.bullets.forEach(b=>text+=`  • ${b}\n`);
+            text+='\n';
+        });
+    });
+    const blob = new Blob([text],{type:'text/plain'});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url;
+    a.download=`${userName.replace(/\s+/g,'_')}_Resume.txt`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>
