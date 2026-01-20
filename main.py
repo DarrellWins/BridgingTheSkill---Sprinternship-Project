@@ -59,7 +59,7 @@ def normalize_experience(sentence):
     return mappings.get(sentence, sentence)
 
 # ---------- BULLET GENERATION ---------- #
-def generate_bullets(sentence, skill, role, n=3):
+def generate_bullets(sentence, skill, role, n=5):
     """Generate professional resume bullet points with skill keywords"""
     bullets = []
     used_verbs = set()
@@ -143,28 +143,35 @@ while True:
     for i, b in enumerate(bullets, 1):
         print(f"  {i}. {b}")
     
-    try:
-        choice = int(input("Choose the best bullet (1-3): "))
-        if 1 <= choice <= 3:
-            experiences.append({
-                "category": category,
-                "role": role,
-                "bullet": bullets[choice - 1]
-            })
-        else:
-            print("Invalid choice. Using first option.")
-            experiences.append({
-                "category": category,
-                "role": role,
-                "bullet": bullets[0]
-            })
-    except ValueError:
-        print("Invalid input. Using first option.")
-        experiences.append({
-            "category": category,
-            "role": role,
-            "bullet": bullets[0]
-        })
+    # Allow user to select 2-3 bullets
+    print("\nSelect 2-3 bullet points for this role.")
+    selected_bullets = []
+    
+    while len(selected_bullets) < 3:
+        try:
+            if len(selected_bullets) >= 2:
+                choice = input(f"Choose bullet #{len(selected_bullets) + 1} (1-5, or press Enter to finish): ").strip()
+                if choice == "":
+                    break
+                choice = int(choice)
+            else:
+                choice = int(input(f"Choose bullet #{len(selected_bullets) + 1} (1-5): "))
+            
+            if 1 <= choice <= 5 and bullets[choice - 1] not in selected_bullets:
+                selected_bullets.append(bullets[choice - 1])
+            elif bullets[choice - 1] in selected_bullets:
+                print("You already selected that bullet. Choose a different one.")
+            else:
+                print("Invalid choice. Please enter a number between 1-5.")
+        except (ValueError, IndexError):
+            print("Invalid input. Please enter a number between 1-5.")
+    
+    # Add all selected bullets to experiences
+    experiences.append({
+        "category": category,
+        "role": role,
+        "bullets": selected_bullets
+    })
 
 # ---------- OUTPUT ---------- #
 print("\n\n" + "="*50)
@@ -175,11 +182,13 @@ print(f"Name: {name}\n")
 # Group and display by category, then by role
 for cat in sorted(set(e["category"] for e in experiences)):
     print(f"--- {cat.upper()} ---\n")
-    # Get all unique roles within this category
-    roles_in_category = [(e["role"], e["bullet"]) for e in experiences if e["category"] == cat]
+    # Get all roles and their bullets within this category
+    roles_in_category = [(e["role"], e["bullets"]) for e in experiences if e["category"] == cat]
     
-    for role, bullet in roles_in_category:
+    for role, bullets in roles_in_category:
         print(f"{role}")
-        print(f"  • {bullet}\n")
+        for bullet in bullets:
+            print(f"  • {bullet}")
+        print()
 
 print("="*50)
