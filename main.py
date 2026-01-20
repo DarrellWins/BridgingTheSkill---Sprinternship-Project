@@ -90,7 +90,7 @@ while True:
         break
     
     category = input("Category (Work / Volunteer / Other): ").strip().title()
-    sentence = input("Describe your experience (e.g., 'student mentor', 'cashier', 'tutor'): ")
+    role = input("Role/Position title (e.g., 'Student Mentor', 'Cashier', 'Tutor'): ").strip().title()
     
     print("\nChoose the skill this experience highlights:")
     skills = list(ACTION_VERBS.keys())
@@ -108,7 +108,7 @@ while True:
         print("Invalid input. Defaulting to Leadership.")
         skill = skills[0]
     
-    bullets = generate_bullets(sentence, skill)
+    bullets = generate_bullets(role, skill)
     
     print("\nSuggested bullet points:")
     for i, b in enumerate(bullets, 1):
@@ -119,18 +119,21 @@ while True:
         if 1 <= choice <= 3:
             experiences.append({
                 "category": category,
+                "role": role,
                 "bullet": bullets[choice - 1]
             })
         else:
             print("Invalid choice. Using first option.")
             experiences.append({
                 "category": category,
+                "role": role,
                 "bullet": bullets[0]
             })
     except ValueError:
         print("Invalid input. Using first option.")
         experiences.append({
             "category": category,
+            "role": role,
             "bullet": bullets[0]
         })
 
@@ -140,12 +143,14 @@ print("PROFESSIONAL RESUME - EXPERIENCE SECTION")
 print("="*50 + "\n")
 print(f"Name: {name}\n")
 
-# Group and display by category
+# Group and display by category, then by role
 for cat in sorted(set(e["category"] for e in experiences)):
-    print(f"--- {cat.upper()} ---")
-    for e in experiences:
-        if e["category"] == cat:
-            print(f"  • {e['bullet']}")
-    print()
+    print(f"--- {cat.upper()} ---\n")
+    # Get all unique roles within this category
+    roles_in_category = [(e["role"], e["bullet"]) for e in experiences if e["category"] == cat]
+    
+    for role, bullet in roles_in_category:
+        print(f"{role}")
+        print(f"  • {bullet}\n")
 
 print("="*50)
