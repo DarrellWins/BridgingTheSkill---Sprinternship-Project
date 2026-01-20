@@ -1,31 +1,45 @@
 import random
-
-# Action verbs organized by skill category
-ACTION_VERBS = {
-    "Leadership": [
-        "Coordinated", "Directed", "Facilitated", "Guided", 
-        "Led", "Managed", "Mentored", "Supervised", "Organized"
-    ],
-    "Communication": [
-        "Advised", "Collaborated", "Consulted", "Presented",
-        "Communicated with", "Engaged", "Counseled", "Instructed"
-    ],
-    "Problem-Solving": [
-        "Analyzed", "Assessed", "Developed", "Implemented",
-        "Improved", "Resolved", "Streamlined", "Designed"
-    ],
-    "Teamwork": [
-        "Assisted", "Contributed to", "Partnered with", 
-        "Supported", "Cooperated with", "Helped", "Aided"
-    ]
-}
+from word_bank import ACTION_VERBS, SKILL_KEYWORDS
 
 # ---------- CLEANING FUNCTIONS ---------- #
 def clean_name(name):
     """Capitalizes each part of the name correctly"""
     return " ".join(word.capitalize() for word in name.strip().split())
 
+def get_skill_keywords(role):
+    """Get relevant skill keywords for a role"""
+    role_lower = role.lower()
+    
+    # Check if we have specific keywords for this role
+    if role_lower in SKILL_KEYWORDS:
+        return random.sample(SKILL_KEYWORDS[role_lower], min(2, len(SKILL_KEYWORDS[role_lower])))
+    
+    # Default keywords if role not found
+    return ["professional skills", "team collaboration"]
+
 def normalize_experience(sentence):
+    """Turns short phrases into complete resume-ready bullet points"""
+    sentence = sentence.strip().lower()
+    
+    # Common experience mappings
+    mappings = {
+        "student mentor": "students through academic mentoring programs",
+        "mentor": "peers through one-on-one mentoring sessions",
+        "volunteer": "community members through volunteer service initiatives",
+        "tutor": "students with challenging academic coursework",
+        "caregiver": "individuals with daily caregiving and personal assistance",
+        "babysitter": "children with childcare and educational activities",
+        "coach": "team members through sports coaching and training",
+        "cashier": "customers with transactions and store operations",
+        "server": "customers with dining service and hospitality",
+        "intern": "team members through internship responsibilities",
+        "teacher": "students through educational instruction",
+        "receptionist": "visitors and clients with administrative tasks",
+        "sales associate": "customers with product selection and purchases",
+        "camp counselor": "campers through recreational activities and supervision"
+    }
+    
+    return mappings.get(sentence, sentence)
     """Turns short phrases into complete resume-ready bullet points"""
     sentence = sentence.strip().lower()
     
@@ -45,18 +59,21 @@ def normalize_experience(sentence):
     return mappings.get(sentence, sentence)
 
 # ---------- BULLET GENERATION ---------- #
-def generate_bullets(sentence, skill, n=3):
-    """Generate professional resume bullet points"""
+def generate_bullets(sentence, skill, role, n=3):
+    """Generate professional resume bullet points with skill keywords"""
     bullets = []
     used_verbs = set()
     
     object_phrase = normalize_experience(sentence)
+    keywords = get_skill_keywords(role)
     
-    # Better templates with proper grammar
+    # Better templates with proper grammar and keyword integration
     templates = [
         "{verb} {object}",
         "{verb} and supported {object}",
-        "{verb} {object} to achieve program goals"
+        "{verb} {object} to achieve program goals",
+        "{verb} {object}, utilizing {keyword1}",
+        "{verb} {object} while developing {keyword1} and {keyword2}"
     ]
     
     for _ in range(n):
@@ -66,11 +83,23 @@ def generate_bullets(sentence, skill, n=3):
             verb = random.choice(ACTION_VERBS[skill])
         used_verbs.add(verb)
         
-        # Create bullet point
-        bullet = random.choice(templates).format(
-            verb=verb,
-            object=object_phrase
-        )
+        # Select template
+        template = random.choice(templates)
+        
+        # Create bullet point with keywords if template uses them
+        if "{keyword1}" in template:
+            bullet = template.format(
+                verb=verb,
+                object=object_phrase,
+                keyword1=keywords[0] if len(keywords) > 0 else "professional skills",
+                keyword2=keywords[1] if len(keywords) > 1 else "team collaboration"
+            )
+        else:
+            bullet = template.format(
+                verb=verb,
+                object=object_phrase
+            )
+        
         bullets.append(bullet)
     
     return bullets
@@ -108,7 +137,7 @@ while True:
         print("Invalid input. Defaulting to Leadership.")
         skill = skills[0]
     
-    bullets = generate_bullets(role, skill)
+    bullets = generate_bullets(role, skill, role)
     
     print("\nSuggested bullet points:")
     for i, b in enumerate(bullets, 1):
