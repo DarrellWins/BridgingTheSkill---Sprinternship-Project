@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Experience → Resume Translator</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:20px; }
+        .container { max-width:800px; margin:0 auto; background:white; border-radius:15px; box-shadow:0 10px 40px rgba(0,0,0,0.2); padding:40px; }
+        h1 { color:#667eea; text-align:center; margin-bottom:10px; font-size:2em; }
+        .subtitle { text-align:center; color:#666; margin-bottom:30px; }
+        .form-section { margin-bottom:25px; }
+        label { display:block; margin-bottom:8px; font-weight:600; color:#333; }
+        input[type="text"], select { width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; font-size:16px; transition:border-color 0.3s; }
+        input[type="text"]:focus, select:focus { outline:none; border-color:#667eea; }
+        button { background:#667eea; color:white; border:none; padding:12px 30px; border-radius:8px; font-size:16px; cursor:pointer; transition:background 0.3s; font-weight:600; }
+        button:hover { background:#5568d3; }
+        .bullet-options { background:#f8f9fa; padding:20px; border-radius:8px; margin:20px 0; }
+        .bullet-item { margin:12px 0; padding:12px; background:white; border-radius:6px; border:2px solid #e0e0e0; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; }
+        .bullet-item:hover { border-color:#667eea; transform:translateX(5px); }
+        .bullet-item.selected { border-color:#667eea; background:#f0f4ff; }
+        .bullet-item input[type="checkbox"] { margin-right:12px; width:20px; height:20px; cursor:pointer; }
+        #output { margin-top:30px; padding:30px; background:#f8f9fa; border-radius:8px; display:none; }
+        #output h2 { color:#667eea; margin-bottom:20px; text-align:center; }
+        .experience-category { margin:25px 0; }
+        .experience-category h3 { color:#333; border-bottom:2px solid #667eea; padding-bottom:8px; margin-bottom:15px; }
+        .experience-role { margin:15px 0 15px 20px; }
+        .experience-role h4 { color:#555; margin-bottom:8px; }
+        .experience-role ul { list-style:none; padding-left:0; }
+        .experience-role li { padding:8px 0 8px 25px; position:relative; color:#444; line-height:1.6; }
+        .experience-role li:before { content:"•"; position:absolute; left:0; color:#667eea; font-weight:bold; font-size:1.2em; }
+        .hidden { display:none; }
+        .btn-secondary { background:#6c757d; margin-left:10px; }
+        .btn-secondary:hover { background:#5a6268; }
+        .download-btn { background:#28a745; margin-top:20px; }
+        .download-btn:hover { background:#218838; }
+        .selection-count { color:#667eea; font-size:14px; margin-top:10px; font-weight:600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Life Experience → Resume Translator</h1>
+        <p class="subtitle">Transform your experiences into professional resume bullet points</p>
+
+        <!-- Step 1: Name -->
+        <div id="step1">
+            <div class="form-section">
+                <label for="userName">Your Full Name</label>
+                <input type="text" id="userName" placeholder="Enter your full name">
+            </div>
+            <button onclick="startAddingExperiences()">Continue</button>
+        </div>
+
+        <!-- Step 2: Add Experience -->
+        <div id="step2" class="hidden">
+            <div class="form-section">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="Work">Work</option>
+                    <option value="Volunteer">Volunteer</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-section">
+                <label for="role">Role/Position Title</label>
+                <input type="text" id="role" placeholder="e.g., Student Mentor, Cashier, Tutor">
+            </div>
+
+            <div class="form-section">
+                <label for="skill">Skill this experience highlights</label>
+                <select id="skill">
+                    <option value="Leadership">Leadership</option>
+                    <option value="Communication">Communication</option>
+                    <option value="Problem-Solving">Problem-Solving</option>
+                    <option value="Teamwork">Teamwork</option>
+                    <option value="Creative">Creative</option>
+                    <option value="Taking Action">Taking Action</option>
+                </select>
+            </div>
+
+            <button onclick="generateBulletOptions()">Generate Bullet Points</button>
+        </div>
+
+        <!-- Step 3: Select Bullets -->
+        <div id="step3" class="hidden">
+            <h3>Select 2-3 Bullet Points</h3>
+            <p class="selection-count" id="selectionCount">Selected: 0/3</p>
+            <div id="bulletOptions" class="bullet-options"></div>
+            <button onclick="saveExperience()">Save Experience</button>
+            <button class="btn-secondary" onclick="resetBulletSelection()">Try Again</button>
+        </div>
+
+        <!-- Step 4: Add More or Finish -->
+        <div id="step4" class="hidden">
+            <p style="text-align:center; margin:20px 0; color:#28a745; font-weight:600;">✓ Experience saved!</p>
+            <div style="text-align:center;">
+                <button onclick="addAnotherExperience()">Add Another Experience</button>
+                <button class="download-btn" onclick="generateResume()">Generate Resume</button>
+            </div>
+        </div>
+
+        <!-- Output -->
+        <div id="output"></div>
+    </div>
+
+<script>
+const ACTION_VERBS={
+    "Leadership":["Led","Directed","Coordinated","Supervised","Managed","Mentored","Facilitated","Guided"],
+    "Communication":["Communicated","Presented","Advised","Consulted","Engaged","Collaborated","Instructed"],
+    "Problem-Solving":["Analyzed","Developed","Designed","Implemented","Improved","Resolved","Streamlined"],
+    "Teamwork":["Collaborated","Partnered","Supported","Contributed","Assisted","Aided"],
+    "Creative":["Created","Designed","Produced","Developed","Generated","Conceptualized"],
+    "Taking Action":["Executed","Initiated","Completed","Delivered","Launched","Implemented"]
+};
+
+const ROLE_OBJECTS={
+    "tech intern":"technical projects and team initiatives",
+    "software intern":"software development tasks and team projects",
+    "data intern":"data analysis and reporting tasks",
+    "intern":"assigned projects and operational responsibilities",
+    "math tutor":"students in core mathematics concepts",
+    "tutor":"students through individualized academic instruction",
+    "student mentor":"students through structured mentoring programs",
+    "mentor":"peers through professional development support",
+    "cashier":"customers with transactions and point-of-sale operations",
+    "sales associate":"customers with product selection and service",
+    "research assistant":"data collection, analysis, and research documentation",
+    "volunteer":"community members through service initiatives",
+    "caregiver":"individuals with daily living and personal support",
+    "teacher":"students through instructional planning and delivery",
+    "coach":"team members through training and performance development",
+    "camp counselor":"campers through supervised activities and programs"
+};
+
+const SKILL_KEYWORDS={
+    "tech intern":["industry best practices","technical documentation"],
+    "intern":["project collaboration","professional communication"],
+    "tutor":["personalized learning strategies","academic progress tracking"],
+    "mentor":["goal setting","professional development"],
+    "volunteer":["community outreach","program coordination"],
+    "research assistant":["data accuracy","analytical methodologies"]
+};
+
+let userName="";
+let experiences=[];
+let currentBullets=[];
+let selectedBullets=[];
+
+function capitalizeWords(str){return str.trim().split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');}
+function normalizeExperience(role){
+    const roleLower=role.toLowerCase();
+    if(ROLE_OBJECTS[roleLower]) return ROLE_OBJECTS[roleLower];
+    for(let key in ROLE_OBJECTS) if(roleLower.includes(key)) return ROLE_OBJECTS[key];
+    return "assigned responsibilities and team objectives";
+}
+function getSkillKeywords(role){
+    const roleLower=role.toLowerCase();
+    if(SKILL_KEYWORDS[roleLower]) return SKILL_KEYWORDS[roleLower].sort(()=>0.5-Math.random()).slice(0,2);
+    return ["professional skills","team collaboration"];
+}
+function generateBullets(skill,role,n=5){
+    const bullets=[]; const usedVerbs=new Set();
+    const objectPhrase=normalizeExperience(role);
+    const keywords=getSkillKeywords(role);
+    const verbs=ACTION_VERBS[skill];
+    const templates=[
+        (v,o)=>`${v} ${o}`,
+        (v,o)=>`${v} ${o} to support organizational goals`,
+        (v,o)=>`${v} ${o} while applying ${keywords[0]}`,
+        (v,o)=>`${v} ${o} in collaboration with team members`,
+        (v,o)=>`${v} ${o} while developing ${keywords[0]} and ${keywords[1]||"cross-functional collaboration"}`
+    ];
+    for(let i=0;i<n;i++){
+        let verb=verbs[Math.floor(Math.random()*verbs.length)];
+        while(usedVerbs.has(verb)&&usedVerbs.size<verbs.length){verb=verbs[Math.floor(Math.random()*verbs.length)];}
+        usedVerbs.add(verb);
+        const template=templates[Math.floor(Math.random()*templates.length)];
+        bullets.push(template(verb,objectPhrase));
+    }
+    return bullets;
+}
+
+function startAddingExperiences(){
+    userName=capitalizeWords(document.getElementById('userName').value);
+    if(!userName)return alert("Please enter your name");
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+}
+
+function generateBulletOptions(){
+    const role=document.getElementById('role').value.trim();
+    const skill=document.getElementById('skill').value;
+    if(!role)return alert("Please enter a role/position");
+    currentBullets=generateBullets(skill,role);
+    selectedBullets=[];
+    const container=document.getElementById('bulletOptions'); container.innerHTML='';
+    currentBullets.forEach((b,i)=>{
+        const div=document.createElement('div');
+        div.className='bullet-item';
+        div.innerHTML=`<input type="checkbox" id="bullet${i}" onchange="toggleBullet(${i})"><label for="bullet${i}" style="cursor:pointer; flex:1">${b}</label>`;
+        div.onclick=e=>{if(e.target.tagName!=='INPUT') document.getElementById(`bullet${i}`).click();}
+        container.appendChild(div);
+    });
+    updateSelectionCount();
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.remove('hidden');
+}
+
+function toggleBullet(index){
+    const checkbox=document.getElementById(`bullet${index}`);
+    const bullet=currentBullets[index];
+    if(checkbox.checked){
+        if(selectedBullets.length>=3){checkbox.checked=false;return alert("Max 3 bullets");}
+        selectedBullets.push(bullet);
+        checkbox.parentElement.classList.add('selected');
+    }else{
+        selectedBullets=selectedBullets.filter(b=>b!==bullet);
+        checkbox.parentElement.classList.remove('selected');
+    }
+    updateSelectionCount();
+}
+
+function updateSelectionCount(){document.getElementById('selectionCount').textContent=`Selected: ${selectedBullets.length}/3`; }
+
+function resetBulletSelection(){document.getElementById('step3').classList.add('hidden'); document.getElementById('step2').classList.remove('hidden'); }
+
+function saveExperience(){
+    if(selectedBullets.length<2){ alert("Select at least 2 bullets"); return; }
+    const category=document.getElementById('category').value;
+    const role=capitalizeWords(document.getElementById('role').value);
+
+    experiences.push({category,role,bullets:[...selectedBullets]});
+
+    // Reset bullets and inputs for next experience
+    selectedBullets=[]; currentBullets=[];
+    document.getElementById('role').value='';
+    document.getElementById('skill').selectedIndex=0;
+
+    document.getElementById('step3').classList.add('hidden');
+    document.getElementById('step4').classList.remove('hidden');
+}
+
+function addAnotherExperience(){
+    document.getElementById('role').value='';
+    document.getElementById('skill').selectedIndex=0;
+    document.getElementById('category').selectedIndex=0;
+    const container=document.getElementById('bulletOptions'); container.innerHTML='';
+    selectedBullets=[]; currentBullets=[];
+    updateSelectionCount();
+
+    document.getElementById('step4').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+}
+
+function generateResume(){
+    const output=document.getElementById('output');
+    let html=`<h2>PROFESSIONAL RESUME – EXPERIENCE</h2><p style="text-align:center;"><strong>Name: ${userName}</strong></p>`;
+    const categories=[...new Set(experiences.map(e=>e.category))].sort();
+    categories.forEach(cat=>{
+        html+=`<div class="experience-category"><h3>--- ${cat.toUpperCase()} ---</h3>`;
+        experiences.filter(e=>e.category===cat).forEach(exp=>{
+            html+=`<div class="experience-role"><h4>${exp.role}</h4><ul>`;
+            exp.bullets.forEach(b=>html+=`<li>${b}</li>`);
+            html+='</ul></div>';
+        });
+        html+='</div>';
+    });
+    output.innerHTML=html; output.style.display='block';
+    downloadResume();
+}
+
+function downloadResume(){
+    let text=`PROFESSIONAL RESUME - EXPERIENCE SECTION\n${'='.repeat(50)}\n\nName: ${userName}\n\n`;
+    const categories=[...new Set(experiences.map(e=>e.category))].sort();
+    categories.forEach(cat=>{
+        text+=`--- ${cat.toUpperCase()} ---\n\n`;
+        experiences.filter(e=>e.category===cat).forEach(exp=>{
+            text+=`${exp.role}\n`;
+            exp.bullets.forEach(b=>text+=`  • ${b}\n`);
+            text+='\n';
+        });
+    });
+    const blob=new Blob([text],{type:'text/plain'});
+    const url=window.URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=`${userName.replace(/\s+/g,'_')}_Resume.txt`; a.click();
+    window.URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
