@@ -16,7 +16,7 @@ def get_skill_keywords(role):
     
     # Default keywords if role not found
     return ["professional skills", "team collaboration"]
-ssss
+
 def normalize_experience(sentence):
     """Turns short phrases into complete resume-ready bullet points"""
     sentence = sentence.strip().lower()
