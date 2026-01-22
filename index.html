@@ -330,56 +330,9 @@
             "sales manager": ["team leadership", "revenue growth", "sales strategy", "performance coaching", "client relationships", "market analysis"],
             "store manager": ["operations oversight", "staff development", "inventory control", "financial management", "customer experience", "strategic planning"],
             "assistant manager": ["operational support", "team supervision", "problem resolution", "scheduling coordination", "quality assurance", "performance improvement"],
-            "shift supervisor": ["team coordination", "workflow management", "quality control", "staff training", "operational efficiency", "shift reporting"]
-        };
-
-        const EXPERIENCE_MAPPINGS = {
-            "tutor": "students across various academic subjects",
-            "student mentor": "peers navigating academic and personal challenges",
-            "mentor": "individuals seeking professional and personal growth",
-            "volunteer": "community organizations and local initiatives",
-            "caregiver": "individuals requiring daily assistance and health monitoring",
-            "babysitter": "children in safe, engaging, and developmentally appropriate environments",
-            "coach": "athletes and team members to reach performance goals",
-            "cashier": "customers through efficient and accurate transactions",
-            "server": "restaurant guests with exceptional dining experiences",
-            "intern": "organizational teams on key projects and daily operations",
-            "teacher": "students in comprehensive learning experiences",
-            "receptionist": "office visitors and internal staff with professionalism",
-            "sales associate": "customers in product selection and purchasing decisions",
-            "camp counselor": "youth in recreational, educational, and social activities",
-            "research assistant": "faculty and research teams in academic investigations",
-            "lifeguard": "swimmers and pool patrons ensuring aquatic safety",
-            "barista": "customers with quality beverages and friendly service",
-            "retail worker": "store operations and customer shopping experiences",
-            "lab assistant": "scientific research teams with laboratory procedures",
-            "event coordinator": "events from initial planning through successful execution",
-            "office assistant": "office staff with administrative and organizational tasks",
-            "warehouse worker": "supply chain operations and inventory systems",
-            "delivery driver": "timely and accurate package delivery to customers",
-            "food service worker": "food preparation and customer service in dining environments",
-            "nursing assistant": "patients with compassionate care and medical support",
-            "teacher's aide": "classroom instruction and individual student needs",
-            "library assistant": "library patrons with research and resource access",
-            "gym attendant": "fitness facility members and equipment maintenance",
-            "dog walker": "pets with exercise, care, and outdoor activities",
-            "house cleaner": "residential clients with thorough cleaning services",
-            "landscaper": "property maintenance and outdoor aesthetic improvements",
-            "park ranger": "park visitors while protecting natural resources",
-            "museum guide": "museum visitors through educational and engaging tours",
-            "pharmacy technician": "pharmacy operations and patient medication needs",
-            "dental assistant": "dental procedures and patient comfort",
-            "veterinary assistant": "veterinary care and animal welfare",
-            "graphic designer": "visual design projects and brand communications",
-            "social media coordinator": "digital engagement and online community building",
-            "data entry clerk": "accurate data processing and database management",
-            "customer service representative": "customer inquiries and service needs",
-            "administrative assistant": "executive and office administrative functions",
-            "project coordinator": "project timelines and cross-functional team collaboration",
-            "sales manager": "sales team performance and revenue objectives",
-            "store manager": "retail operations and team productivity",
-            "assistant manager": "daily operations and staff coordination",
-            "shift supervisor": "team performance during assigned shifts"
+            "shift supervisor": ["team coordination", "workflow management", "quality control", "staff training", "operational efficiency", "shift reporting"],
+            "hotel front desk": ["guest relations", "reservation management", "check-in procedures", "customer service excellence", "problem resolution", "hospitality standards"],
+            "front desk": ["visitor reception", "appointment scheduling", "phone management", "customer service", "administrative coordination", "professional communication"]
         };
 
         let userName = "";
@@ -406,52 +359,19 @@
         function getSkillKeywords(role) {
             const roleLower = role.toLowerCase();
             
-            // Check for exact match
             if (SKILL_KEYWORDS[roleLower]) {
                 const keywords = [...SKILL_KEYWORDS[roleLower]];
-                return keywords.sort(() => 0.5 - Math.random()).slice(0, 2);
+                return keywords.sort(() => 0.5 - Math.random()).slice(0, 6);
             }
             
-            // Check for partial matches (e.g., "sales associate" in "retail sales associate")
             for (let key in SKILL_KEYWORDS) {
                 if (roleLower.includes(key) || key.includes(roleLower)) {
                     const keywords = [...SKILL_KEYWORDS[key]];
-                    return keywords.sort(() => 0.5 - Math.random()).slice(0, 2);
+                    return keywords.sort(() => 0.5 - Math.random()).slice(0, 6);
                 }
             }
             
-            // Generic keywords for unknown roles
-            return ["professional development", "operational excellence"];
-        }
-
-        function normalizeExperience(role) {
-            const roleLower = role.toLowerCase();
-            
-            // Check for exact match
-            if (EXPERIENCE_MAPPINGS[roleLower]) {
-                return EXPERIENCE_MAPPINGS[roleLower];
-            }
-            
-            // Check for partial matches
-            for (let key in EXPERIENCE_MAPPINGS) {
-                if (roleLower.includes(key)) {
-                    return EXPERIENCE_MAPPINGS[key];
-                }
-            }
-            
-            // Generate a generic but grammatically correct phrase for unknown roles
-            // Check if role contains common titles
-            if (roleLower.includes('manager') || roleLower.includes('supervisor') || roleLower.includes('director')) {
-                return "team operations and organizational objectives";
-            } else if (roleLower.includes('assistant') || roleLower.includes('aide')) {
-                return "daily operations and team support functions";
-            } else if (roleLower.includes('associate') || roleLower.includes('representative')) {
-                return "customer needs and organizational services";
-            } else if (roleLower.includes('coordinator') || roleLower.includes('specialist')) {
-                return "project initiatives and stakeholder requirements";
-            } else {
-                return "organizational goals and professional responsibilities";
-            }
+            return ["professional development", "operational excellence", "strategic planning", "quality assurance", "team collaboration", "process improvement"];
         }
 
         function generateBullets() {
@@ -463,45 +383,91 @@
                 return;
             }
 
-            const objectPhrase = normalizeExperience(role);
             const keywords = getSkillKeywords(role);
             const verbs = [...ACTION_VERBS[skill]];
-            const usedVerbs = new Set();
             
-            // Varied templates with better grammar and natural phrasing
-            const templates = [
-                (v, o) => `${v} ${o}`,
-                (v, o) => `${v} ${o} to meet organizational standards`,
-                (v, o) => `${v} ${o} while maintaining quality benchmarks`,
-                (v, o, k) => `${v} ${o} through ${k[0]}`,
-                (v, o, k) => `${v} ${o} utilizing ${k[0]} and ${k[1]}`,
-                (v, o, k) => `${v} ${o}, emphasizing ${k[0]}`,
-                (v, o) => `${v} ${o} in alignment with team objectives`,
-                (v, o, k) => `${v} ${o} with focus on ${k[0]}`,
-                (v, o) => `${v} ${o} to enhance operational effectiveness`,
-                (v, o, k) => `${v} ${o} by implementing ${k[0]}`
-            ];
-
-            currentBullets = [];
-            const templatesCopy = [...templates];
-            
-            // Shuffle templates for variety
-            for (let i = templatesCopy.length - 1; i > 0; i--) {
+            for (let i = verbs.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [templatesCopy[i], templatesCopy[j]] = [templatesCopy[j], templatesCopy[i]];
+                [verbs[i], verbs[j]] = [verbs[j], verbs[i]];
             }
             
+            let allKeywords = [...keywords];
+            while (allKeywords.length < 6) {
+                allKeywords = [...allKeywords, ...keywords];
+            }
+            allKeywords = allKeywords.slice(0, 6);
+            
+            for (let i = allKeywords.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allKeywords[i], allKeywords[j]] = [allKeywords[j], allKeywords[i]];
+            }
+            
+            const bulletBuilders = [
+                (v, k) => `${v} ${k[0]} initiatives to drive measurable improvements in ${k[1]}`,
+                (v, k) => `${v} strategic ${k[1]} programs resulting in enhanced ${k[2]}`,
+                (v, k) => `${v} comprehensive ${k[2]} standards that elevated ${k[3]} metrics`,
+                (v, k) => `${v} daily ${k[0]} workflows ensuring consistent ${k[1]} delivery`,
+                (v, k) => `${v} efficient ${k[1]} procedures across ${k[2]} touchpoints`,
+                (v, k) => `${v} systematic approaches to ${k[2]} in high-volume ${k[3]} environments`,
+                (v, k) => `${v} cross-departmental efforts in advancing ${k[0]} and ${k[1]} objectives`,
+                (v, k) => `${v} partnerships with stakeholders to optimize ${k[1]} and ${k[2]} outcomes`,
+                (v, k) => `${v} team collaboration on ${k[2]} projects supporting ${k[3]} goals`,
+                (v, k) => `${v} critical ${k[0]} functions contributing to ${k[1]} success`,
+                (v, k) => `${v} key ${k[1]} responsibilities that strengthened ${k[2]} capabilities`,
+                (v, k) => `${v} essential ${k[2]} activities driving ${k[3]} improvement`,
+                (v, k) => `${v} innovative ${k[0]} strategies for enhanced ${k[1]} and ${k[2]}`,
+                (v, k) => `${v} advanced ${k[1]} techniques optimizing ${k[2]} efficiency`,
+                (v, k) => `${v} modern ${k[2]} methodologies improving ${k[3]} delivery`,
+                (v, k) => `${v} ${k[0]} protocols maintaining ${k[1]} best practices`,
+                (v, k) => `${v} quality ${k[1]} benchmarks ensuring ${k[2]} compliance`,
+                (v, k) => `${v} professional ${k[2]} guidelines supporting ${k[3]} standards`,
+                (v, k) => `${v} exceptional ${k[0]} while prioritizing ${k[1]} and ${k[2]}`,
+                (v, k) => `${v} positive ${k[1]} through effective ${k[2]} and ${k[3]}`,
+                (v, k) => `${v} outstanding ${k[2]} exceeding ${k[3]} expectations`,
+                (v, k) => `${v} complex ${k[0]} challenges using ${k[1]} approaches`,
+                (v, k) => `${v} multifaceted ${k[1]} issues while maintaining ${k[2]} continuity`,
+                (v, k) => `${v} diverse ${k[2]} obstacles through ${k[3]} problem-solving`,
+                (v, k) => `${v} team members on ${k[0]} best practices and ${k[1]} procedures`,
+                (v, k) => `${v} colleagues in effective ${k[1]} and ${k[2]} implementation`,
+                (v, k) => `${v} staff development programs focusing on ${k[2]} and ${k[3]} excellence`,
+                (v, k) => `${v} operational systems enhancing ${k[0]} and ${k[1]} effectiveness`,
+                (v, k) => `${v} organizational frameworks supporting ${k[1]} and ${k[2]} goals`,
+                (v, k) => `${v} infrastructure improvements for ${k[2]} and ${k[3]} advancement`,
+                (v, k) => `${v} simultaneous ${k[0]} and ${k[1]} priorities in fast-paced settings`,
+                (v, k) => `${v} concurrent ${k[1]} and ${k[2]} demands across varied functions`,
+                (v, k) => `${v} multiple ${k[2]} and ${k[3]} responsibilities with attention to detail`,
+                (v, k) => `${v} ${k[0]} direction for teams pursuing ${k[1]} objectives`,
+                (v, k) => `${v} oversight of ${k[1]} operations ensuring ${k[2]} performance`,
+                (v, k) => `${v} guidance on ${k[2]} initiatives aligned with ${k[3]} vision`,
+                (v, k) => `${v} transparent ${k[0]} channels to enhance ${k[1]} and ${k[2]}`,
+                (v, k) => `${v} clear ${k[1]} messaging across diverse ${k[2]} audiences`,
+                (v, k) => `${v} effective ${k[2]} exchanges facilitating ${k[3]} collaboration`,
+                (v, k) => `${v} ${k[0]} metrics tracking progress toward ${k[1]} targets`,
+                (v, k) => `${v} performance indicators for ${k[1]} and ${k[2]} optimization`,
+                (v, k) => `${v} evaluation systems measuring ${k[2]} and ${k[3]} success`,
+                (v, k) => `${v} creative solutions for ${k[0]} and ${k[1]} enhancement`,
+                (v, k) => `${v} forward-thinking ${k[1]} approaches modernizing ${k[2]} practices`,
+                (v, k) => `${v} inventive ${k[2]} methods streamlining ${k[3]} processes`,
+                (v, k) => `${v} resource allocation for ${k[0]} and ${k[1]} maximization`,
+                (v, k) => `${v} budget oversight supporting ${k[1]} and ${k[2]} initiatives`,
+                (v, k) => `${v} asset management optimizing ${k[2]} and ${k[3]} utilization`
+            ];
+            
+            for (let i = bulletBuilders.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [bulletBuilders[i], bulletBuilders[j]] = [bulletBuilders[j], bulletBuilders[i]];
+            }
+
+            currentBullets = [];
+            
             for (let i = 0; i < 5; i++) {
-                let verb = verbs[Math.floor(Math.random() * verbs.length)];
-                let attempts = 0;
-                while (usedVerbs.has(verb) && attempts < 20) {
-                    verb = verbs[Math.floor(Math.random() * verbs.length)];
-                    attempts++;
-                }
-                usedVerbs.add(verb);
+                const verb = verbs[i % verbs.length];
+                const builder = bulletBuilders[i];
                 
-                const template = templatesCopy[i % templatesCopy.length];
-                const bullet = template(verb, objectPhrase, keywords);
+                const startIdx = (i * 2) % allKeywords.length;
+                const rotatedKeywords = [...allKeywords.slice(startIdx), ...allKeywords.slice(0, startIdx)];
+                
+                const bullet = builder(verb, rotatedKeywords);
                 currentBullets.push(bullet);
             }
 
@@ -608,7 +574,7 @@
                 html += `</div>`;
             });
 
-            html += `<div style="text-align: center;"><button class="download-btn" onclick="downloadResume()">Download as Text</button></div>`;
+            html += `<div style="text-align: center;"><button class="download-btn" onclick="downloadResume()">Download as PDF</button></div>`;
             
             output.innerHTML = html;
             output.style.display = 'block';
@@ -616,30 +582,103 @@
         }
 
         function downloadResume() {
-            let text = `PROFESSIONAL RESUME - EXPERIENCE SECTION\n`;
-            text += `${'='.repeat(50)}\n\n`;
-            text += `Name: ${userName}\n\n`;
+            // Create a new window for printing
+            const printWindow = window.open('', '', 'height=600,width=800');
+            
+            // Build the PDF-ready content
+            let content = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${userName} - Resume</title>
+                    <style>
+                        @media print {
+                            body { margin: 0; }
+                            @page { margin: 1in; }
+                        }
+                        body {
+                            font-family: 'Calibri', 'Arial', sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                            max-width: 8.5in;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        h1 {
+                            text-align: center;
+                            font-size: 24px;
+                            margin-bottom: 5px;
+                            color: #2c3e50;
+                        }
+                        h2 {
+                            font-size: 16px;
+                            color: #2c3e50;
+                            border-bottom: 2px solid #2c3e50;
+                            padding-bottom: 5px;
+                            margin-top: 25px;
+                            margin-bottom: 15px;
+                            text-transform: uppercase;
+                        }
+                        h3 {
+                            font-size: 14px;
+                            color: #34495e;
+                            margin-top: 15px;
+                            margin-bottom: 8px;
+                        }
+                        ul {
+                            list-style-type: disc;
+                            margin-left: 20px;
+                            padding-left: 0;
+                        }
+                        li {
+                            margin-bottom: 8px;
+                            font-size: 12px;
+                        }
+                        .experience-section {
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${userName}</h1>
+                    <h2 style="text-align: center; font-size: 14px; border: none; margin-top: 5px;">Professional Experience</h2>
+            `;
 
             const categories = [...new Set(experiences.map(e => e.category))].sort();
             
             categories.forEach(category => {
-                text += `--- ${category.toUpperCase()} ---\n\n`;
+                content += `<div class="experience-section">`;
+                content += `<h2>${category}</h2>`;
+                
                 experiences.filter(e => e.category === category).forEach(exp => {
-                    text += `${exp.role}\n`;
+                    content += `<h3>${exp.role}</h3>`;
+                    content += `<ul>`;
                     exp.bullets.forEach(bullet => {
-                        text += `  • ${bullet}\n`;
+                        content += `<li>${bullet}</li>`;
                     });
-                    text += `\n`;
+                    content += `</ul>`;
                 });
+                
+                content += `</div>`;
             });
 
-            const blob = new Blob([text], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${userName.replace(/\s+/g, '_')}_Resume.txt`;
-            a.click();
-            window.URL.revokeObjectURL(url);
+            content += `
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(content);
+            printWindow.document.close();
+            
+            // Wait for content to load, then trigger print dialog
+            printWindow.onload = function() {
+                printWindow.focus();
+                printWindow.print();
+                // Close the window after printing (or if user cancels)
+                setTimeout(() => {
+                    printWindow.close();
+                }, 100);
+            };
         }
     </script>
 </body>
