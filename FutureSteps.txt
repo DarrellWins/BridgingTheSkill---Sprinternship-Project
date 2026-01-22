@@ -1,0 +1,8 @@
+Some Added features that would make this more convient 
+    - Adding months, years, dates
+    - Incorparting quantative values for the bullet points
+    - PDF Format exported in standard sizing
+    - Adding skills and technical projects as an option
+    - Options to filter based on their job focus 
+    - Adding more information like phone number/address was a option but decided not to due to data concerns
+    - Expanding word_bank
